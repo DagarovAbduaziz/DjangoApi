@@ -93,7 +93,7 @@ def checking(image, answer):
             for x in range(0, questions1):
                 arr = myPixelVal[x]
                 myIndexVal = np.where(arr == np.amax(arr))
-                if 1300 > np.amax(arr):
+                if 1400 > np.amax(arr):
                     myIndex.append(None)
                 else:
                     myIndex.append(myIndexVal[0][0])
@@ -127,29 +127,29 @@ def checking(image, answer):
     return grading, img_base64
 
 # answers = [0, 2, 1, 3, 2, 2, 0, 3, 1, 2, 2, 1, 1, 3, 0, 1, 2, 2, 3, 1] 
-@csrf_exempt
-def app(request):
-    if request.method == 'POST':
-        try:
-            data = json.loads(request.body)
-            image_data = data.get('image')
+# @csrf_exempt
+# def app(request):
+#     if request.method == 'POST':
+#         try:
+#             data = json.loads(request.body)
+#             image_data = data.get('image')
 
-            if image_data:
-                img_code = Image.open(BytesIO(base64.b64decode(image_data)))
-                img_code.save('core/test.png', "PNG")
-                img = 'core/test.png'
-                grading = checking(img)  # Assuming 'checking' is a function you have defined elsewhere
-                count_true = grading.count(1)
-                count_false = grading.count(0)
-                count_none = grading.count(None)
-                score = count_true / len(grading) * 100 if len(grading) > 0 else 0
-                return JsonResponse({'Correct': count_true, 'F': count_false, 'N': count_none, 'D': score})
-            else:
-                return JsonResponse({'error': 'No image provided'}, status=400)
-        except Exception as e:
-            return JsonResponse({'error': str(e)}, status=500)
-    else:
-        return JsonResponse({'error': 'Invalid request method'}, status=405)
+#             if image_data:
+#                 img_code = Image.open(BytesIO(base64.b64decode(image_data)))
+#                 img_code.save('core/test.png', "PNG")
+#                 img = 'core/test.png'
+#                 grading = checking(img)  # Assuming 'checking' is a function you have defined elsewhere
+#                 count_true = grading.count(1)
+#                 count_false = grading.count(0)
+#                 count_none = grading.count(None)
+#                 score = count_true / len(grading) * 100 if len(grading) > 0 else 0
+#                 return JsonResponse({'Correct': count_true, 'F': count_false, 'N': count_none, 'D': score})
+#             else:
+#                 return JsonResponse({'error': 'No image provided'}, status=400)
+#         except Exception as e:
+#             return JsonResponse({'error': str(e)}, status=500)
+#     else:
+#         return JsonResponse({'error': 'Invalid request method'}, status=405)
     
 
 @csrf_exempt
@@ -192,5 +192,5 @@ def gett(request):
 urlpatterns = [
     path('get', gett),
     path('', createApi), 
-    path('api/', app)
+    # path('api/', app)
 ]
